@@ -1,3 +1,9 @@
+#!/usr/bin/bash
+
+has_package() {
+  type "$1" > /dev/null 2>&1
+}
+
 default_install_dir() {
   printf %s "${HOME}/.dan-developer"
 }
@@ -30,6 +36,8 @@ update_from_git() {
     exit 2
   }
 
+  echo " => Updated to $PROJECT_VERSION!"
+
   return
 }
 
@@ -54,4 +62,13 @@ install_from_git() {
   return
 }
 
-install_from_git
+do_install() {
+  if has_package git; then
+    install_from_git
+  else
+    echo >&2 ' * You need `git` to install this.'
+    exit 1
+  fi
+}
+
+do_install
