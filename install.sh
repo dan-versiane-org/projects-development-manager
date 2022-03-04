@@ -97,15 +97,26 @@ do_get_project_dir() {
   echo "$(read_an_answer '  What is the name of the dir projects?' "$HOME/Workflow/projects")"
 }
 
+get_profile_zsh_or_bash() {
+  if [ -f "$HOME/.zshrc" ]; then
+    echo "$HOME/.zshrc"
+  else
+    echo "$HOME/.bashrc"
+  fi
+}
+
 do_setup() {
   SETUP_NAME=$(do_get_setup_name)
   PROJECT_DIR=$(do_get_project_dir)
 
   echo "SETUP_NAME=$SETUP_NAME
-  PROJECT_DIR=$PROJECT_DIR" > "$(install_dir)/.env"
+PROJECT_DIR=$PROJECT_DIR" > "$(install_dir)/.env"
 
-  sudo ln -s "$(install_dir)/bin/setup.sh" "/usr/local/bin/$SETUP_NAME"
   mkdir -p $PROJECT_DIR
+
+  echo "
+export DAN_DEVELOP_DIR=\"$(install_dir)\"
+[ -s \"\$DAN_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$DAN_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
 }
 
 ## Setting

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-dan_dir() {
-  printf %s "$(dirname $(dirname $(readlink -f $0)))"
+do_setup() {
+  source "$DAN_DEVELOP_DIR/.env"
+  alias "$SETUP_NAME"="$DAN_DEVELOP_DIR/bin/startup.sh"
 }
 
-echo $(dan_dir)
+do_setup
