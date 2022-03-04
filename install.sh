@@ -109,14 +109,17 @@ do_setup() {
   SETUP_NAME=$(do_get_setup_name)
   PROJECT_DIR=$(do_get_project_dir)
 
-  echo "SETUP_NAME=$SETUP_NAME
-PROJECT_DIR=$PROJECT_DIR" > "$(install_dir)/.env"
+  echo "SETUP_NAME=$SETUP_NAME" > "$(install_dir)/.env"
+  echo "PROJECT_DIR=$PROJECT_DIR" >> "$(install_dir)/.env"
 
   mkdir -p $PROJECT_DIR
 
-  echo "
-export DAN_DEVELOP_DIR=\"$(install_dir)\"
-[ -s \"\$DAN_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$DAN_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
+  local tmp_exists=$(grep -c "export DAN_DEVELOP_DIR" $(get_profile_zsh_or_bash))
+  if [ $tmp_exists -ne 1 ]; then
+    echo >> $(get_profile_zsh_or_bash)
+    echo "export DAN_DEVELOP_DIR=\"$(install_dir)\"" >> $(get_profile_zsh_or_bash)
+    echo "[ -s \"\$DAN_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$DAN_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
+  fi
 }
 
 ## Setting
