@@ -109,8 +109,8 @@ do_setup() {
   SETUP_NAME=$(do_get_setup_name)
   PROJECT_DIR=$(do_get_project_dir)
 
-  echo "PDM_SETUP_NAME=$SETUP_NAME" > "$(install_dir)/.env"
-  echo "PDM_PROJECT_DIR=$PROJECT_DIR" >> "$(install_dir)/.env"
+  echo "export PDM_SETUP_NAME=$SETUP_NAME" > "$(install_dir)/.env"
+  echo "export PDM_PROJECT_DIR=$PROJECT_DIR" >> "$(install_dir)/.env"
 
   mkdir -p $PROJECT_DIR
 
