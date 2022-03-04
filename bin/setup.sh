@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/bash
+
+source "$PDM_DEVELOP_DIR/.env"
 
 do_setup() {
-  source "$DAN_DEVELOP_DIR/.env"
-  alias "$SETUP_NAME"="$DAN_DEVELOP_DIR/bin/startup.sh"
+  alias "$PDM_SETUP_NAME"="$PDM_DEVELOP_DIR/bin/startup.sh"
 }
 
 do_setup

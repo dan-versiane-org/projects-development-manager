@@ -5,7 +5,7 @@ has_package() {
 }
 
 default_install_dir() {
-  printf %s "${HOME}/.dan-developer"
+  printf %s "${HOME}/.pdm"
 }
 
 install_dir() {
@@ -13,7 +13,7 @@ install_dir() {
 }
 
 project_source() {
-  printf %s "git@github.com:danielversiane13/development-projects.git"
+  printf %s "git@github.com:danielversiane13/projects-development-manager.git"
 }
 
 project_latest_version() {
@@ -90,7 +90,7 @@ read_an_answer() {
 }
 
 do_get_setup_name() {
-  echo "$(read_an_answer '  What is the name of the bin you want to use?' 'dev')"
+  echo "$(read_an_answer '  What is the name of the bin you want to use?' 'pdm')"
 }
 
 do_get_project_dir() {
@@ -109,16 +109,16 @@ do_setup() {
   SETUP_NAME=$(do_get_setup_name)
   PROJECT_DIR=$(do_get_project_dir)
 
-  echo "SETUP_NAME=$SETUP_NAME" > "$(install_dir)/.env"
-  echo "PROJECT_DIR=$PROJECT_DIR" >> "$(install_dir)/.env"
+  echo "PDM_SETUP_NAME=$SETUP_NAME" > "$(install_dir)/.env"
+  echo "PDM_PROJECT_DIR=$PROJECT_DIR" >> "$(install_dir)/.env"
 
   mkdir -p $PROJECT_DIR
 
-  local tmp_exists=$(grep -c "export DAN_DEVELOP_DIR" $(get_profile_zsh_or_bash))
+  local tmp_exists=$(grep -c "export PDM_DEVELOP_DIR" $(get_profile_zsh_or_bash))
   if [ $tmp_exists -ne 1 ]; then
     echo >> $(get_profile_zsh_or_bash)
-    echo "export DAN_DEVELOP_DIR=\"$(install_dir)\"" >> $(get_profile_zsh_or_bash)
-    echo "[ -s \"\$DAN_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$DAN_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
+    echo "export PDM_DEVELOP_DIR=\"$(install_dir)\"" >> $(get_profile_zsh_or_bash)
+    echo "[ -s \"\$PDM_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$PDM_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
   fi
 }
 
