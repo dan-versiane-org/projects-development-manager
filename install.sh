@@ -71,4 +71,42 @@ do_install() {
   fi
 }
 
+## Installing
 do_install
+
+read_an_answer() {
+  local ANSWER
+
+  if [ -z "$2" ]; then
+    read -r -p "$1 " ANSWER
+  else
+    read -p "$1 $(echo -e "\e[0;35m[default: $2]\033[0m") " ANSWER
+    if [ -z "$ANSWER" ]; then
+      ANSWER="$2"
+    fi
+  fi
+
+  printf %s $ANSWER
+}
+
+do_get_setup_name() {
+  echo "$(read_an_answer '  What is the name of the bin you want to use?' 'dev')"
+}
+
+do_get_project_dir() {
+  echo "$(read_an_answer '  What is the name of the dir projects?' "$HOME/Workflow/projects")"
+}
+
+do_setup() {
+  SETUP_NAME=$(do_get_setup_name)
+  PROJECT_DIR=$(do_get_project_dir)
+
+  echo "SETUP_NAME=$SETUP_NAME
+  PROJECT_DIR=$PROJECT_DIR" > "$(install_dir)/.env"
+
+  sudo ln -s "$(install_dir)/bin/setup.sh" "/usr/local/bin/$SETUP_NAME"
+  mkdir -p $PROJECT_DIR
+}
+
+## Setting
+do_setup
