@@ -17,7 +17,7 @@ project_source() {
 }
 
 project_latest_version() {
-  printf %s "v0.1.0"
+  printf %s "v0.1.1"
 }
 
 update_from_git() {
