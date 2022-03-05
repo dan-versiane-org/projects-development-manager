@@ -27,12 +27,12 @@ update_from_git() {
   PROJECT_VERSION="$(project_latest_version)"
 
   if ! command git --git-dir="$INSTALL_DIR"/.git --work-tree="$INSTALL_DIR" fetch origin "$PROJECT_VERSION" --depth=1 2>/dev/null; then
-    echo >&2 " * Failed to update with $PROJECT_VERSION."
+    echo -e >&2 " [\e[1;31mError\e[0m]: Failed to update with $PROJECT_VERSION."
     exit 2
   fi
 
   command git -c advice.detachedHead=false --git-dir="$INSTALL_DIR"/.git --work-tree="$INSTALL_DIR" checkout -f --quiet FETCH_HEAD || {
-    echo >&2 " * Failed to checkout on $PROJECT_VERSION."
+    echo -e >&2 " [\e[1;31mError\e[0m]: Failed to checkout on $PROJECT_VERSION."
     exit 2
   }
 
@@ -54,7 +54,7 @@ install_from_git() {
   else
     # Cloning repo
     command git clone "$(project_source)" --depth=1 "${INSTALL_DIR}" || {
-      echo >&2 ' * Failed to clone repo.'
+      echo -e >&2 ' [\e[1;31mError\e[0m]: Failed to clone repo.'
       exit 2
     }
   fi
@@ -66,7 +66,7 @@ do_install() {
   if has_package git; then
     install_from_git
   else
-    echo >&2 ' * You need `git` to install this.'
+    echo -e >&2 ' [\e[1;34mInfo\e[0m]: You need `git` to install this.'
     exit 1
   fi
 }

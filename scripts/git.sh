@@ -31,18 +31,18 @@ git_clone_one() {
   local PROJECT_FULL_DIR="${PDM_PROJECT_DIR}/${1}"
 
   if [ -d $PROJECT_FULL_DIR ]; then
-    echo -e " \e[1;33m*\e[0m Warning: Directory $PROJECT_FULL_DIR already exists."
+    echo -e " [\e[1;33mWarning\e[0m]: Directory $PROJECT_FULL_DIR already exists."
     return
   fi
 
   if [ -z $DEFAULT_BRANCH ]; then
     git clone "$REPO_URL" "$PROJECT_FULL_DIR" || {
-      echo >&2 " * Failed to clone $1"
+      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to clone $1"
       exit 1
     }
   else
     git clone --branch="$DEFAULT_BRANCH" "$REPO_URL" "$PROJECT_FULL_DIR" || {
-      echo >&2 " * Failed to clone $1"
+      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to clone $1"
       exit 1
     }
   fi
@@ -63,9 +63,9 @@ handle_git_clone() {
   local git_message_error
 
   if [ ! -f $GIT_REPO_FILE ]; then
-    git_message_error=" \e[1;31m*\e[0m Error: Cannot find file \e[0;35m'$GIT_REPO_FILE'\e[0m."$'\n'
+    git_message_error="  [\e[1;31mError\e[0m]: Cannot find file \e[0;35m'$GIT_REPO_FILE'\e[0m."$'\n'
   elif [ ! -s "$GIT_REPO_FILE" ]; then
-    git_message_error=" \e[1;31m*\e[0m Error: No projects found on config repo."$'\n'
+    git_message_error="  [\e[1;31mError\e[0m]: No projects found on config repo."$'\n'
   fi
 
   if [ -n "$git_message_error" ]; then
@@ -90,7 +90,7 @@ handle_git_clone() {
       fi
     done < $GIT_REPO_FILE
 
-    echo -e " \e[1;31m*\e[0m Error: Project $1 not found on config repo."
+    echo -e "  [\e[1;31mError\e[0m]: Project $1 not found on config repo."
     exit 1
   fi
 
@@ -122,11 +122,11 @@ handle_git_checkout() {
     cd ${PDM_PROJECT_DIR}/${i}
     git fetch origin
     git checkout "${branch}" $git_params 2>/dev/null || {
-      echo -e >&2 " \e[0;31m* Failed to checkout \e[1;35m${i} -> ${1}\e[0m"
+      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to checkout \e[1;35m${i} -> ${1}\e[0m"
       continue
     }
     git pull origin "${branch}" 2>/dev/null || {
-      echo -e >&2 " \e[0;31m* Failed to pull \e[1;35m${i} -> ${1}\e[0m"
+      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to pull \e[1;35m${i} -> ${1}\e[0m"
       continue
     }
   done
