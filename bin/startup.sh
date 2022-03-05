@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
 source "$PDM_DIR/.env"
-source "$PDM_DIR/configs/path.env"
+
+PDM_SCRIPTS_DIR="$PDM_DIR/scripts"
 
 do_exec_command() {
   local script="$PDM_SCRIPTS_DIR/$1.sh"
@@ -19,8 +20,7 @@ do_exec_command() {
     exit 1
   fi
 
-  shift 2
-  $command $@
+  $command ${@:2:$#}
 }
 
 do_exec_command $@
