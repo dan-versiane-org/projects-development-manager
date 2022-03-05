@@ -114,11 +114,11 @@ do_setup() {
 
   mkdir -p $PROJECT_DIR
 
-  local tmp_exists=$(grep -c "export PDM_DEVELOP_DIR" $(get_profile_zsh_or_bash))
+  local tmp_exists=$(grep -c "export PDM_DIR" $(get_profile_zsh_or_bash))
   if [ $tmp_exists -ne 1 ]; then
     echo >> $(get_profile_zsh_or_bash)
-    echo "export PDM_DEVELOP_DIR=\"$(install_dir)\"" >> $(get_profile_zsh_or_bash)
-    echo "[ -s \"\$PDM_DEVELOP_DIR/bin/setup.sh\" ] && \. \"\$PDM_DEVELOP_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
+    echo "export PDM_DIR=\"$(install_dir)\"" >> $(get_profile_zsh_or_bash)
+    echo "[ -s \"\$PDM_DIR/bin/setup.sh\" ] && \. \"\$PDM_DIR/bin/setup.sh\"" >> $(get_profile_zsh_or_bash)
   fi
 }
 

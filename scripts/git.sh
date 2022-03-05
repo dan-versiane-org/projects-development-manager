@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-GIT_REPO_FILE="$PDM_DEVELOP_DIR/data/repo.config"
+GIT_REPO_FILE="$PDM_DIR/data/repo.config"
 
 git_version() {
   printf %s "v0.1.0"
@@ -92,7 +92,7 @@ handle_git_current() {
   done
   echo -e "$result" | column -t -s "|"
 
-  cd ${PDM_DEVELOP_DIR}
+  cd ${PDM_DIR}
 }
 
 handle_git_checkout() {
@@ -117,7 +117,7 @@ handle_git_checkout() {
     }
   done
 
-  cd ${PDM_DEVELOP_DIR}
+  cd ${PDM_DIR}
 }
 
 tmp=$1
