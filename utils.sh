@@ -31,3 +31,9 @@ pdm_info() {
 pdm_show_command() {
   printf %s "${PDM_SPACE}\e[0;32m${1}|\e[0m${2}"
 }
+
+pdm_has_current_workspace() {
+  if [ -z "$PDM_WORKSPACE_CURRENT_NAME" ]; then
+    return 1
+  fi
+}
