@@ -3,7 +3,7 @@
 GIT_REPO_FILE="$PDM_DIR/data/repo.config"
 
 git_version() {
-  printf %s "v0.1.1"
+  printf %s "v0.1.2"
 }
 
 git_commands() {
@@ -15,7 +15,7 @@ ${SPACE}\e[0;32mhelp|\e[0mShow this help
 "
 }
 
-handle_git_usage() {
+handle_git_help() {
   local SPACE="   "
   local NEWLINE=$'\n'
 
@@ -24,10 +24,6 @@ handle_git_usage() {
   echo -e "${SPACE}\e[0;35m${PDM_SETUP_NAME} git \e[0;32m[command]\e[0m$NEWLINE"
   echo -e " \e[4;33mAvailable commands:\e[0m"
   echo -e "$(git_commands)" | column -t -s "|"
-}
-
-handle_git_not_found() {
-  echo -e " \e[1;31m*\e[0m Error: Cannot find command \e[0;35m'$1'\e[0m."
 }
 
 git_clone_one() {
@@ -97,6 +93,8 @@ handle_git_clone() {
     echo -e " \e[1;31m*\e[0m Error: Project $1 not found on config repo."
     exit 1
   fi
+
+  echo -e $'\n'"\e[0;35m * Clone successful.\033[0m"
 }
 
 handle_git_current() {
@@ -134,33 +132,7 @@ handle_git_checkout() {
   done
 
   cd ${PDM_DIR}
+
+  echo
+  handle_git_current
 }
-
-tmp=$1
-shift
-
-case $tmp in
-  checkout)
-    handle_git_checkout $@
-    echo
-    handle_git_current
-    exit $?
-    ;;
-  current)
-    handle_git_current $@
-    exit $?
-    ;;
-  clone)
-    handle_git_clone $@
-    echo -e "\e[0;35m * Clone successful.\033[0m"
-    exit $?
-    ;;
-  help)
-    handle_git_usage
-    exit $?
-    ;;
-  *)
-    handle_git_not_found $tmp
-    exit 1
-    ;;
-esac
