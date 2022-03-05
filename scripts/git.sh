@@ -3,7 +3,7 @@
 GIT_REPO_FILE="$PDM_DIR/data/repo.config"
 
 git_version() {
-  printf %s "v0.1.0"
+  printf %s "v0.1.1"
 }
 
 git_commands() {
@@ -35,7 +35,7 @@ git_clone_one() {
   local PROJECT_FULL_DIR="${PDM_PROJECT_DIR}/${1}"
 
   if [ -d $PROJECT_FULL_DIR ]; then
-    echo "Directory $PROJECT_FULL_DIR already exists."
+    echo -e " \e[1;33m*\e[0m Warning: Directory $PROJECT_FULL_DIR already exists."
     return
   fi
 
@@ -64,6 +64,21 @@ git_clone_all() {
 }
 
 handle_git_clone() {
+  local git_message_error
+
+  if [ ! -f $GIT_REPO_FILE ]; then
+    git_message_error=" \e[1;31m*\e[0m Error: Cannot find file \e[0;35m'$GIT_REPO_FILE'\e[0m."$'\n'
+  elif [ ! -s "$GIT_REPO_FILE" ]; then
+    git_message_error=" \e[1;31m*\e[0m Error: No projects found on config repo."$'\n'
+  fi
+
+  if [ -n "$git_message_error" ]; then
+    echo -e "$git_message_error"
+    echo -e " \e[4;33mExample:\e[0m"
+    echo -e "   project-name;github.com:any_user_git/project-url.git"$'\n'
+    exit 1
+  fi
+
   if [ -z $1 ]; then
     git_clone_all
   else
@@ -79,7 +94,8 @@ handle_git_clone() {
       fi
     done < $GIT_REPO_FILE
 
-    echo "Project $1 not found config repo."
+    echo -e " \e[1;31m*\e[0m Error: Project $1 not found on config repo."
+    exit 1
   fi
 }
 
