@@ -94,7 +94,7 @@ do_get_setup_name() {
 }
 
 do_get_project_dir() {
-  echo "$(read_an_answer '  What is the name of the dir projects?' "$HOME/Workflow/projects")"
+  echo "$(read_an_answer '  What is the name of the dir projects?' "$HOME/Workspace/Projects")"
 }
 
 get_profile_zsh_or_bash() {
