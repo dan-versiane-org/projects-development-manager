@@ -20,7 +20,7 @@ do_exec_command() {
     exit 1
   fi
 
-  $command ${@:2:$#}
+  $command ${@:3:$#}
 }
 
 do_exec_command $@
