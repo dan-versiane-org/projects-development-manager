@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 source "$PDM_DIR/.env"
+source "$PDM_DIR/utils.sh"
 
 PDM_SCRIPTS_DIR="$PDM_DIR/scripts"
 

@@ -1,15 +1,7 @@
 #!/usr/bin/bash
 
-has_package() {
-  type "$1" > /dev/null 2>&1
-}
-
-project_latest_version() {
-  printf %s "v0.1.1"
-}
-
 update_from_git() {
-  local PROJECT_VERSION="$(project_latest_version)"
+  local PROJECT_VERSION="$(pdm_latest_version)"
 
   if ! command git --git-dir="$PDM_DIR"/.git --work-tree="$PDM_DIR" fetch origin "$PROJECT_VERSION" --depth=1 2>/dev/null; then
     echo -e >&2 " [\e[1;31mError\e[0m]: Failed to update with $PROJECT_VERSION."
@@ -25,7 +17,7 @@ update_from_git() {
 }
 
 handle_self_update() {
-  if has_package git; then
+  if pdm_has_package git; then
     update_from_git
   else
     echo -e >&2 ' [\e[1;34mInfo\e[0m]: You need `git` to install this.'
