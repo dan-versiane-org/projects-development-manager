@@ -9,7 +9,7 @@ pdm_has_package() {
 }
 
 pdm_latest_version() {
-  printf %s "v0.1.1"
+  printf %s "v0.1.2"
 }
 
 pdm_success() {

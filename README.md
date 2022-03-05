@@ -5,5 +5,5 @@
 To install, you should run the install script.
 
 ```sh
-curl -o- https://raw.githubusercontent.com/danielversiane13/projects-development-manager/v0.1.1/install.sh | bash
+curl -o- https://raw.githubusercontent.com/danielversiane13/projects-development-manager/v0.1.2/install.sh | bash
 ```
