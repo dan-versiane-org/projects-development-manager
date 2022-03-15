@@ -9,7 +9,7 @@ pdm_has_package() {
 }
 
 pdm_latest_version() {
-  printf %s "v0.1.2"
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/danielversiane13/projects-development-manager/main/version.md)
 }
 
 pdm_success() {
