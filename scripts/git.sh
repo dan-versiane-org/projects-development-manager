@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 GIT_REPO_FILE="$PDM_DIR/data/repo.config"
+GIT_PROJECTS_DIR="${PDM_WORKSPACE_CURRENT_ROOT}/projects"
 
 git_commands() {
   echo "$(pdm_show_command 'checkout' 'Switch to a different branch of projects')"
@@ -18,7 +19,7 @@ handle_git_help() {
 
 git_clone_one() {
   local REPO_URL="$2"
-  local PROJECT_FULL_DIR="${PDM_PROJECT_DIR}/${1}"
+  local PROJECT_FULL_DIR="${GIT_PROJECTS_DIR}/${1}"
 
   if [ -d $PROJECT_FULL_DIR ]; then
     pdm_warning "Directory $PROJECT_FULL_DIR already exists."
@@ -89,8 +90,8 @@ handle_git_clone() {
 
 handle_git_current() {
   local result
-  for i in $(ls ${PDM_PROJECT_DIR}); do
-    cd ${PDM_PROJECT_DIR}/${i}
+  for i in $(ls ${GIT_PROJECTS_DIR}); do
+    cd ${GIT_PROJECTS_DIR}/${i}
     local current=$(git branch --show-current)
     result="${result}"$'\n'"  ${PDM_PC}${i}|:${PDM_GC} ${current}${PDM_RC}"
   done
@@ -108,8 +109,8 @@ handle_git_checkout() {
     git_params="$git_params -f"
   fi
 
-  for i in $(ls ${PDM_PROJECT_DIR}); do
-    cd ${PDM_PROJECT_DIR}/${i}
+  for i in $(ls ${GIT_PROJECTS_DIR}); do
+    cd ${GIT_PROJECTS_DIR}/${i}
     git fetch origin
     git checkout "${branch}" $git_params 2>/dev/null || {
       pdm_error "Failed to checkout ${PDM_PC}${i} -> ${1}${PDM_RC}"
