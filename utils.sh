@@ -8,8 +8,12 @@ pdm_has_package() {
   type "$1" > /dev/null 2>&1
 }
 
+pdm_current_version() {
+  printf %s $(cat $PDM_DIR/version.md)
+}
+
 pdm_latest_version() {
-  printf %s "v0.1.1"
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/danielversiane13/projects-development-manager/main/version.md)
 }
 
 pdm_success() {
