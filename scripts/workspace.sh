@@ -41,6 +41,8 @@ handle_workspace_create() {
   local _ROOT="${PDM_WORKSPACE_DIR}/${1}"
   local _CONF="$PDM_WORKSPACE_JSON"
 
+  mkdir -p "$_ROOT"
+
   _NAME="$1" \
     _ROOT="$_ROOT" \
     _CONF="$_CONF" \
@@ -50,7 +52,6 @@ handle_workspace_create() {
 
   if [ $result -eq 0 ]; then
     echo -e >&2 " [\e[1;32mSuccess\e[0m]: Added \e[1;35m${1}\e[0m to workspaces."
-    mkdir -p "$_ROOT"
     pdm_has_current_workspace || handle_workspace_set $1
     exit 0
   elif [ $result -eq 2 ]; then
