@@ -22,7 +22,7 @@ git_clone_one() {
   local PROJECT_FULL_DIR="${GIT_PROJECTS_DIR}/${1}"
 
   if [ -d $PROJECT_FULL_DIR ]; then
-    pdm_warning "Directory $PROJECT_FULL_DIR already exists."
+    # pdm_warning "Directory $PROJECT_FULL_DIR already exists."
     return
   fi
 
@@ -85,7 +85,7 @@ handle_git_clone() {
     exit 1
   fi
 
-  echo -e $'\n'"${PDM_PC} * Clone successful.\033[0m"
+  pdm_success "Clone successful."
 }
 
 handle_git_current() {
