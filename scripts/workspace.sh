@@ -31,9 +31,9 @@ workspace_get_info() {
 }
 
 handle_workspace_help() {
-  echo -e " \e[4;33mUsage:\e[0m"
-  echo -e "${PDM_SPACE}\e[0;35m${PDM_SETUP_NAME} workspace \e[0;32m[command]\e[0m"$'\n'
-  echo -e " \e[4;33mAvailable commands:\e[0m"
+  echo -e " ${PDM_TC}Usage:${PDM_RC}"
+  echo -e "${PDM_SPACE}${PDM_PC}${PDM_SETUP_NAME} workspace ${PDM_GC}[command]${PDM_RC}"$'\n'
+  echo -e " ${PDM_TC}Available commands:${PDM_RC}"
   echo -e "$(workspace_commands)" | column -t -s "|"
 }
 
@@ -51,21 +51,21 @@ handle_workspace_create() {
   local result=$?
 
   if [ $result -eq 0 ]; then
-    echo -e >&2 " [\e[1;32mSuccess\e[0m]: Added \e[1;35m${1}\e[0m to workspaces."
+    pdm_success "Added ${PDM_PC}${1}${PDM_RC} to workspaces."
     pdm_has_current_workspace || handle_workspace_set $1
     exit 0
   elif [ $result -eq 2 ]; then
-    echo -e >&2 " [\e[1;31mError\e[0m]: The workspace name \e[1;35m${1}\e[0m already exists."
+    pdm_error "The workspace name ${PDM_PC}${1}${PDM_RC} already exists."
     exit 1
   elif [ $result -eq 3 ]; then
-    echo -e >&2 " [\e[1;31mError\e[0m]: The workspace root path \e[1;35m${_ROOT}\e[0m already exists."
+    pdm_error "The workspace root path ${PDM_PC}${_ROOT}${PDM_RC} already exists."
     exit 1
   fi
 }
 
 handle_workspace_current() {
   if ! pdm_has_current_workspace; then
-    echo -e >&2 " [\e[1;31mError\e[0m]: No workspace is currently set."
+    pdm_error "No workspace is currently set."
     exit 1
   fi
 
@@ -98,5 +98,5 @@ handle_workspace_set() {
   echo >&2 "PDM_WORKSPACE_CURRENT_NAME=\"${result[0]}\"" > $PDM_WORKSPACE_CONF
   echo >&2 "PDM_WORKSPACE_CURRENT_ROOT=\"${result[1]}\"" >> $PDM_WORKSPACE_CONF
 
-  pdm_success "Setted workspace to \e[1;35m${1}\e[0m."
+  pdm_success "Setted workspace to ${PDM_PC}${1}${PDM_RC}."
 }

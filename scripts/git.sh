@@ -10,9 +10,9 @@ git_commands() {
 }
 
 handle_git_help() {
-  echo -e " \e[4;33mUsage:\e[0m"
-  echo -e "${PDM_SPACE}\e[0;35m${PDM_SETUP_NAME} git \e[0;32m[command]\e[0m"$'\n'
-  echo -e " \e[4;33mAvailable commands:\e[0m"
+  echo -e " ${PDM_TC}Usage:${PDM_RC}"
+  echo -e "${PDM_SPACE}${PDM_PC}${PDM_SETUP_NAME} git ${PDM_GC}[command]${PDM_RC}"$'\n'
+  echo -e " ${PDM_TC}Available commands:${PDM_RC}"
   echo -e "$(git_commands)" | column -t -s "|"
 }
 
@@ -21,18 +21,18 @@ git_clone_one() {
   local PROJECT_FULL_DIR="${PDM_PROJECT_DIR}/${1}"
 
   if [ -d $PROJECT_FULL_DIR ]; then
-    echo -e " [\e[1;33mWarning\e[0m]: Directory $PROJECT_FULL_DIR already exists."
+    pdm_warning "Directory $PROJECT_FULL_DIR already exists."
     return
   fi
 
   if [ -z $DEFAULT_BRANCH ]; then
     git clone "$REPO_URL" "$PROJECT_FULL_DIR" || {
-      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to clone $1"
+      pdm_error "Failed to clone $1"
       exit 1
     }
   else
     git clone --branch="$DEFAULT_BRANCH" "$REPO_URL" "$PROJECT_FULL_DIR" || {
-      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to clone $1"
+      pdm_error "Failed to clone $1"
       exit 1
     }
   fi
@@ -53,14 +53,14 @@ handle_git_clone() {
   local git_message_error
 
   if [ ! -f $GIT_REPO_FILE ]; then
-    git_message_error="  [\e[1;31mError\e[0m]: Cannot find file \e[0;35m'$GIT_REPO_FILE'\e[0m."$'\n'
+    git_message_error="Cannot find file ${PDM_PC}'$GIT_REPO_FILE'${PDM_RC}."
   elif [ ! -s "$GIT_REPO_FILE" ]; then
-    git_message_error="  [\e[1;31mError\e[0m]: No projects found on config repo."$'\n'
+    git_message_error="No projects found on config repo."
   fi
 
   if [ -n "$git_message_error" ]; then
-    echo -e "$git_message_error"
-    echo -e " \e[4;33mExample:\e[0m"
+    pdm_error "$git_message_error"$'\n'
+    echo -e " ${PDM_TC}Example:${PDM_RC}"
     echo -e "   project-name;github.com:any_user_git/project-url.git"$'\n'
     exit 1
   fi
@@ -80,11 +80,11 @@ handle_git_clone() {
       fi
     done < $GIT_REPO_FILE
 
-    echo -e "  [\e[1;31mError\e[0m]: Project $1 not found on config repo."
+    pdm_error "Project $1 not found on config repo."
     exit 1
   fi
 
-  echo -e $'\n'"\e[0;35m * Clone successful.\033[0m"
+  echo -e $'\n'"${PDM_PC} * Clone successful.\033[0m"
 }
 
 handle_git_current() {
@@ -92,7 +92,7 @@ handle_git_current() {
   for i in $(ls ${PDM_PROJECT_DIR}); do
     cd ${PDM_PROJECT_DIR}/${i}
     local current=$(git branch --show-current)
-    result="${result}"$'\n'"  \e[1;35m${i}|:\e[0;32m ${current}\e[0m"
+    result="${result}"$'\n'"  ${PDM_PC}${i}|:${PDM_GC} ${current}${PDM_RC}"
   done
   echo -e "$result" | column -t -s "|"
 
@@ -112,11 +112,11 @@ handle_git_checkout() {
     cd ${PDM_PROJECT_DIR}/${i}
     git fetch origin
     git checkout "${branch}" $git_params 2>/dev/null || {
-      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to checkout \e[1;35m${i} -> ${1}\e[0m"
+      pdm_error "Failed to checkout ${PDM_PC}${i} -> ${1}${PDM_RC}"
       continue
     }
     git pull origin "${branch}" 2>/dev/null || {
-      echo -e >&2 " [\e[1;31mError\e[0m]: Failed to pull \e[1;35m${i} -> ${1}\e[0m"
+      pdm_error "Failed to pull ${PDM_PC}${i} -> ${1}${PDM_RC}"
       continue
     }
   done
