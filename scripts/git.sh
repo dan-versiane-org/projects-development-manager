@@ -2,10 +2,6 @@
 
 GIT_REPO_FILE="$PDM_DIR/data/repo.config"
 
-git_version() {
-  printf %s "v0.1.2"
-}
-
 git_commands() {
   echo "$(pdm_show_command 'checkout' 'Switch to a different branch of projects')"
   echo "$(pdm_show_command 'current' 'Show the current branch of projects')"

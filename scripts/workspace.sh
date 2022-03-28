@@ -15,10 +15,6 @@ workspace_check_dependencies || exit 1
 [ ! -f $PDM_WORKSPACE_JSON ] && echo "["$'\n'"]" > $PDM_WORKSPACE_JSON
 [ ! -f $PDM_WORKSPACE_CONF ] && echo "" > $PDM_WORKSPACE_CONF
 
-workspace_version() {
-  printf %s "v0.0.1"
-}
-
 workspace_commands() {
   echo "$(pdm_show_command 'create' 'Create a new workspace')"
   echo "$(pdm_show_command 'current' 'Shows the current workspace')"
@@ -35,7 +31,6 @@ workspace_get_info() {
 }
 
 handle_workspace_help() {
-  echo -e $'\n'"\e[1;35m${PDM_SETUP_NAME} workspace \e[0mversion \e[4;33m$(workspace_version)\e[0m"$'\n'
   echo -e " \e[4;33mUsage:\e[0m"
   echo -e "${PDM_SPACE}\e[0;35m${PDM_SETUP_NAME} workspace \e[0;32m[command]\e[0m"$'\n'
   echo -e " \e[4;33mAvailable commands:\e[0m"
