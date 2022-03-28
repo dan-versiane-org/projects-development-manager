@@ -13,14 +13,14 @@ update_from_git() {
     exit 2
   }
 
-  echo -e " [${PDM_PC}Success${PDM_RC}]: Updated to $PROJECT_VERSION!"
+  pdm_success "Updated to $PROJECT_VERSION!"
 }
 
 handle_self_update() {
   if pdm_has_package git; then
     update_from_git
   else
-    echo -e >&2 ' [${PDM_IC}Info${PDM_RC}]: You need `git` to install this.'
+    pdm_info 'You need `git` to install this.'
     exit 1
   fi
 }
