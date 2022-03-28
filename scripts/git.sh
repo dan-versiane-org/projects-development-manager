@@ -7,21 +7,15 @@ git_version() {
 }
 
 git_commands() {
-  echo -e "
-${SPACE}\e[0;32mcheckout|\e[0mSwitch to a different branch of projects
-${SPACE}\e[0;32mcurrent|\e[0mShow the current branch of projects
-${SPACE}\e[0;32mclone|\e[0mClone a git repo
-${SPACE}\e[0;32mhelp|\e[0mShow this help
-"
+  echo "$(pdm_show_command 'checkout' 'Switch to a different branch of projects')"
+  echo "$(pdm_show_command 'current' 'Show the current branch of projects')"
+  echo "$(pdm_show_command 'clone' 'Clone a git repo')"
+  echo "$(pdm_show_command 'help' 'Show this help')"
 }
 
 handle_git_help() {
-  local SPACE="   "
-  local NEWLINE=$'\n'
-
-  echo -e "$NEWLINE\e[1;35m${PDM_SETUP_NAME} git \e[0mversion \e[4;33m$(git_version)\e[0m$NEWLINE"
   echo -e " \e[4;33mUsage:\e[0m"
-  echo -e "${SPACE}\e[0;35m${PDM_SETUP_NAME} git \e[0;32m[command]\e[0m$NEWLINE"
+  echo -e "${PDM_SPACE}\e[0;35m${PDM_SETUP_NAME} git \e[0;32m[command]\e[0m"$'\n'
   echo -e " \e[4;33mAvailable commands:\e[0m"
   echo -e "$(git_commands)" | column -t -s "|"
 }
