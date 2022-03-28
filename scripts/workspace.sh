@@ -55,7 +55,7 @@ handle_workspace_create() {
     pdm_has_current_workspace || handle_workspace_set $1
     exit 0
   elif [ $result -eq 2 ]; then
-    echo -e >&2 " [\e[1;31mError\e[0m]: The workspace name \e[1;35m${_NAME}\e[0m already exists."
+    echo -e >&2 " [\e[1;31mError\e[0m]: The workspace name \e[1;35m${1}\e[0m already exists."
     exit 1
   elif [ $result -eq 3 ]; then
     echo -e >&2 " [\e[1;31mError\e[0m]: The workspace root path \e[1;35m${_ROOT}\e[0m already exists."
