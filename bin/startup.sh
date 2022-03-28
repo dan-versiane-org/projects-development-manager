@@ -1,14 +1,15 @@
 #!/usr/bin/bash
 
 ## Loads the PDM environment
-source "$PDM_DIR/.env"
-[ -s "$PDM_WORKSPACE_CONF" ] && source "$PDM_WORKSPACE_CONF"
+source "${PDM_DIR}/.env"
 
 ## Sets the variables
 PDM_SCRIPTS_DIR="$PDM_DIR/scripts"
+PDM_WORKSPACE_CONF="${PDM_DIR}/data/workspace.config"
 
 ## Loads them PDM utils
 source "$PDM_DIR/utils.sh"
+[ -f "$PDM_WORKSPACE_CONF" ] && source "$PDM_WORKSPACE_CONF"
 
 do_exec_command() {
   local script="$PDM_SCRIPTS_DIR/$1.sh"
