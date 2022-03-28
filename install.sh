@@ -101,6 +101,7 @@ do_setup() {
   local PROJECT_DIR=$(do_get_project_dir)
   local PROFILE=$(pdm_get_profile_zsh_or_bash)
 
+  echo "PDM_SETUP_NAME=pdm" > "$(pdm_install_dir)/.env"
   echo "PDM_PROJECT_DIR=$PROJECT_DIR" > "$(pdm_install_dir)/.env"
 
   mkdir -p $PROJECT_DIR
