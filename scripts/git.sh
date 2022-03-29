@@ -5,8 +5,8 @@ GIT_PROJECTS_DIR="${PDM_WORKSPACE_CURRENT_ROOT}/projects"
 
 git_commands() {
   echo "$(pdm_show_command 'checkout' 'Switch to a different branch of projects')"
-  echo "$(pdm_show_command 'current' 'Show the current branch of projects')"
   echo "$(pdm_show_command 'clone' 'Clone a git repo')"
+  echo "$(pdm_show_command 'current' 'Show the current branch of projects')"
   echo "$(pdm_show_command 'help' 'Show this help')"
 }
 
