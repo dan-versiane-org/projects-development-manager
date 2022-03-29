@@ -15,7 +15,7 @@ do_exec_command() {
   local script="$PDM_SCRIPTS_DIR/$1.sh"
 
   if [ ! -f $script ];then
-    pdm_error "${PDM_PC}${1}${PDM_RC} command not be found."
+    pdm_error "${PDM_PC}${1}${PDM_RC} script not be found."
     exit 1
   fi
 
@@ -23,7 +23,7 @@ do_exec_command() {
   command="handle_${1}_${2}"
 
   if ! type $command &> /dev/null;then
-    pdm_error "${PDM_PC}${1} ${2}${PDM_RC} could not be found."
+    pdm_error "${PDM_PC}${1} ${2}${PDM_RC} command not be found."
     exit 1
   fi
 
