@@ -102,24 +102,41 @@ handle_git_current() {
 
 handle_git_checkout() {
   local branch=$1
-
   local git_params=""
+  local only_checkout=0
 
-  if [[ $2 = "--force" ]]; then
-    git_params="$git_params -f"
-  fi
+  for ARG in ${@:2:$#}; do
+    case "${ARG}" in
+      -f|--force) git_params="$git_params -f";;
+      -o|--only-checkout) only_checkout=1;;
+    esac
+  done
 
   for i in $(ls ${GIT_PROJECTS_DIR}); do
     cd ${GIT_PROJECTS_DIR}/${i}
-    git fetch origin
-    git checkout "${branch}" $git_params 2>/dev/null || {
-      pdm_error "Failed to checkout ${PDM_PC}${i} -> ${1}${PDM_RC}"
-      continue
-    }
-    git pull origin "${branch}" 2>/dev/null || {
-      pdm_error "Failed to pull ${PDM_PC}${i} -> ${1}${PDM_RC}"
-      continue
-    }
+
+    local current=$(git branch --show-current)
+    echo -e >&2 "  * ${PDM_PC}${i}: ${PDM_GC}${current} -> ${branch}${PDM_RC}"
+
+    if [ $only_checkout -eq 1 ]; then
+      git checkout -q "${branch}" $git_params 2>/dev/null || {
+        pdm_error "Failed to checkout ${PDM_PC}${i} to ${1}${PDM_RC}"
+        continue
+      }
+    else
+      if [ "$current" != "$branch" ]; then
+        git fetch origin --prune 2>/dev/null
+        git checkout -q "${branch}" $git_params 2>/dev/null || {
+          pdm_error "Failed to checkout ${PDM_PC}${i} to ${1}${PDM_RC}"
+          continue
+        }
+      fi
+
+      git pull origin "${branch}" 2>/dev/null || {
+        pdm_error "Failed to pull ${PDM_PC}${i} -> ${1}${PDM_RC}"
+        continue
+      }
+    fi
   done
 
   cd ${PDM_DIR}
