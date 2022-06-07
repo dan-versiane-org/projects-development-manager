@@ -13,11 +13,11 @@ pdm_install_dir() {
 }
 
 pdm_source() {
-  printf %s "git@github.com:danielversiane13/projects-development-manager.git"
+  printf %s "git@github.com:dan-versiane-org/projects-development-manager.git"
 }
 
 pdm_version() {
-  printf %s $(curl -o- -s https://raw.githubusercontent.com/danielversiane13/projects-development-manager/main/version.md)
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/main/version.md)
 }
 
 pdm_update_from_git() {

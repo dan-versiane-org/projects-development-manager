@@ -23,7 +23,7 @@ pdm_current_version() {
 }
 
 pdm_latest_version() {
-  printf %s $(curl -o- -s https://raw.githubusercontent.com/danielversiane13/projects-development-manager/main/version.md)
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/main/version.md)
 }
 
 pdm_success() {
