@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-GIT_REPO_FILE="$PDM_DIR/data/repo.config"
+GIT_REPO_FILE="${PDM_WORKSPACE_CURRENT_ROOT}/config/pdm/repository.config"
 GIT_PROJECTS_DIR="${PDM_WORKSPACE_CURRENT_ROOT}/projects"
 
 git_commands() {
@@ -56,7 +56,7 @@ handle_git_clone() {
   if [ ! -f $GIT_REPO_FILE ]; then
     git_message_error="Cannot find file ${PDM_PC}'$GIT_REPO_FILE'${PDM_RC}."
   elif [ ! -s "$GIT_REPO_FILE" ]; then
-    git_message_error="No projects found on config repo."
+    git_message_error="No projects found on repository config."
   fi
 
   if [ -n "$git_message_error" ]; then
