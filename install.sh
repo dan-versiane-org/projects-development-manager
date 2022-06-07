@@ -107,7 +107,8 @@ do_setup() {
   if [ ! -f "${PDM_RC_FILE}" ]; then
     local PDM_WORKSPACE_DIR=$(do_get_workspace_dir)
 
-    echo "#!/usr/bin/env bash"$'\n' > $PDM_RC_FILE
+    echo "#!/usr/bin/env bash" > $PDM_RC_FILE
+    echo >> $PDM_RC_FILE
     echo "export PDM_DIR=\"\${HOME}/.pdm\"" >> $PDM_RC_FILE
     echo "export PDM_WORKSPACE_DIR=\"$PDM_WORKSPACE_DIR\"" >> $PDM_RC_FILE
     echo "[ -s \"\${PDM_DIR}/bin/bash_completion\" ] && \\. \"\${PDM_DIR}/bin/bash_completion\"" >> $PDM_RC_FILE
@@ -115,7 +116,9 @@ do_setup() {
 
   local HAS_SOURCE=$(grep -c "source \"\${HOME}/.pdmrc\"" $PROFILE)
   if [ $HAS_SOURCE -ne 1 ]; then
-    echo $'\n'"source \"\${HOME}/.pdmrc\"  ## This loads pdm"$'\n' >> $PROFILE
+    echo >> $PROFILE
+    echo "source \"\${HOME}/.pdmrc\" ## This loads pdm" >> $PROFILE
+    echo >> $PROFILE
   fi
 
   sudo ln -fs "$PDM_DIR/bin/pdm.sh" "/usr/bin/pdm"
