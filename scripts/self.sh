@@ -3,6 +3,11 @@
 update_from_git() {
   local PROJECT_VERSION="$(pdm_latest_version)"
 
+  if [ "${PROJECT_VERSION}" = "$(pdm_current_version)" ]; then
+    pdm_success "Already up to date with $PROJECT_VERSION."
+    exit 0
+  fi
+
   if ! command git --git-dir="$PDM_DIR"/.git --work-tree="$PDM_DIR" fetch origin "$PROJECT_VERSION" --depth=1 2>/dev/null; then
     pdm_error "Failed to update with $PROJECT_VERSION."
     exit 2
