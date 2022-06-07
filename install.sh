@@ -93,23 +93,28 @@ pdm_read_an_answer() {
   printf %s $ANSWER
 }
 
-do_get_project_dir() {
-  echo "$(pdm_read_an_answer '  What is the name of the dir projects?' "$HOME/Workspace/default")"
+do_get_workspace_dir() {
+  echo "$(pdm_read_an_answer '  What is the name of the dir workspaces?' "$HOME/workspaces")"
 }
 
 do_setup() {
-  local PROJECT_DIR=$(do_get_project_dir)
+  local PDM_DIR="$(pdm_install_dir)"
   local PROFILE=$(pdm_get_profile_zsh_or_bash)
 
-  echo "PDM_SETUP_NAME=pdm" > "$(pdm_install_dir)/.env"
-  echo "PDM_PROJECT_DIR=$PROJECT_DIR" > "$(pdm_install_dir)/.env"
+  mkdir -p $PDM_DIR
 
-  mkdir -p $PROJECT_DIR
+  if [ ! -f "${PDM_DIR}/.env" ]; then
+    local PDM_WORKSPACE_DIR=$(do_get_workspace_dir)
+
+    echo "PDM_SETUP_NAME=pdm" > "${PDM_DIR}/.env"
+    echo "PDM_WORKSPACE_DIR=$PDM_WORKSPACE_DIR" >> "${PDM_DIR}/.env"
+    echo >> "${PDM_DIR}/.env"
+  fi
 
   local tmp_exists=$(grep -c "export PDM_DIR" $PROFILE)
   if [ $tmp_exists -ne 1 ]; then
     echo >> $PROFILE
-    echo "export PDM_DIR=\"$(pdm_install_dir)\"" >> $PROFILE
+    echo "export PDM_DIR=\"${PDM_DIR}\"" >> $PROFILE
     echo "[ -s \"\$PDM_DIR/bin/setup.sh\" ] && \. \"\$PDM_DIR/bin/setup.sh\"" >> $PROFILE
   fi
 }
