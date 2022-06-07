@@ -99,24 +99,26 @@ do_get_workspace_dir() {
 
 do_setup() {
   local PDM_DIR="$(pdm_install_dir)"
+  local PDM_RC_FILE="${HOME}/.pdmrc"
   local PROFILE=$(pdm_get_profile_zsh_or_bash)
 
   mkdir -p $PDM_DIR
 
-  if [ ! -f "${PDM_DIR}/.env" ]; then
+  if [ ! -f "${PDM_RC_FILE}" ]; then
     local PDM_WORKSPACE_DIR=$(do_get_workspace_dir)
 
-    echo "PDM_SETUP_NAME=pdm" > "${PDM_DIR}/.env"
-    echo "PDM_WORKSPACE_DIR=$PDM_WORKSPACE_DIR" >> "${PDM_DIR}/.env"
-    echo >> "${PDM_DIR}/.env"
+    echo "#!/usr/bin/env bash"$'\n' > $PDM_RC_FILE
+    echo "export PDM_DIR=\"\${HOME}/.pdm\"" >> $PDM_RC_FILE
+    echo "export PDM_WORKSPACE_DIR=\"$PDM_WORKSPACE_DIR\"" >> $PDM_RC_FILE
+    echo "[ -s \"\${PDM_DIR}/bin/bash_completion\" ] && \\. \"\${PDM_DIR}/bin/bash_completion\"" >> $PDM_RC_FILE
   fi
 
-  local tmp_exists=$(grep -c "export PDM_DIR" $PROFILE)
-  if [ $tmp_exists -ne 1 ]; then
-    echo >> $PROFILE
-    echo "export PDM_DIR=\"${PDM_DIR}\"" >> $PROFILE
-    echo "[ -s \"\$PDM_DIR/bin/setup.sh\" ] && \. \"\$PDM_DIR/bin/setup.sh\"" >> $PROFILE
+  local HAS_SOURCE=$(grep -c "source \"\${HOME}/.pdmrc\"" $PROFILE)
+  if [ $HAS_SOURCE -ne 1 ]; then
+    echo $'\n'"source \"\${HOME}/.pdmrc\"  ## This loads pdm"$'\n' >> $PROFILE
   fi
+
+  sudo ln -fs "$PDM_DIR/bin/pdm.sh" "/usr/bin/pdm"
 }
 
 ## Setting

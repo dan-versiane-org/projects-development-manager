@@ -1,8 +1,5 @@
 #!/usr/bin/bash
 
-## Loads the PDM environment
-source "${PDM_DIR}/.env"
-
 ## Sets the variables
 PDM_SCRIPTS_DIR="$PDM_DIR/scripts"
 PDM_WORKSPACE_CONF="${PDM_DIR}/data/workspace.config"
