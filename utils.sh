@@ -23,23 +23,27 @@ pdm_current_version() {
 }
 
 pdm_latest_version() {
-  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/main/version.md)
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/stable/version.md)
+}
+
+pdm_echo() {
+  echo -e >&2 "$1"
 }
 
 pdm_success() {
-  echo -e >&2 "${PDM_ECHO_SPACE}[${PDM_PC}Success${PDM_RC}]: $1"
+  pdm_echo "${PDM_ECHO_SPACE}[${PDM_PC}Success${PDM_RC}]: $1"
 }
 
 pdm_error() {
-  echo -e >&2 "${PDM_ECHO_SPACE}[${PDM_EC}Error${PDM_RC}]: $1"
+  pdm_echo "${PDM_ECHO_SPACE}[${PDM_EC}Error${PDM_RC}]: $1"
 }
 
 pdm_warning() {
-  echo -e >&2 "${PDM_ECHO_SPACE}[${PDM_WC}Warning${PDM_RC}]: $1"
+  pdm_echo "${PDM_ECHO_SPACE}[${PDM_WC}Warning${PDM_RC}]: $1"
 }
 
 pdm_info() {
-  echo -e >&2 "${PDM_ECHO_SPACE}[${PDM_IC}Info${PDM_RC}]: $1"
+  pdm_echo "${PDM_ECHO_SPACE}[${PDM_IC}Info${PDM_RC}]: $1"
 }
 
 pdm_show_command() {
