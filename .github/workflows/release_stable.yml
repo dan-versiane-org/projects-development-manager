@@ -1,9 +1,14 @@
 name: release - stable
+
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "**/version.md"
   pull_request:
+    branches:
+      - main
     types:
       - labeled
 
@@ -13,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       # Bump version on merging Pull Requests with specific labels.
       # (bump:major,bump:minor,bump:patch)
@@ -28,7 +36,20 @@ jobs:
           github_token: ${{ secrets.github_token }}
           tag: ${{ steps.bumpr.outputs.next_version }}
 
-      # Create release stable.
+      - name: Update version file.
+        if: "!steps.bumpr.outputs.skip"
+        run: |
+          echo "${{ steps.bumpr.outputs.next_version }}" > version.md
+          echo >> version.md
+
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "release: autopublish ${{ steps.bumpr.outputs.next_version }}"
+
+      # Create tag release.
       - uses: rickstaa/action-create-tag@v1
         with:
           tag: "stable"
