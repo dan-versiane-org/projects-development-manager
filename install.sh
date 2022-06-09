@@ -102,14 +102,13 @@ do_setup() {
   local PDM_RC_FILE="${HOME}/.pdmrc"
   local PROFILE=$(pdm_get_profile_zsh_or_bash)
 
-  mkdir -p $PDM_DIR
-
   if [ ! -f "${PDM_RC_FILE}" ]; then
     local PDM_WORKSPACE_DIR=$(do_get_workspace_dir)
+    mkdir -p $PDM_WORKSPACE_DIR
 
     echo "#!/usr/bin/env bash" > $PDM_RC_FILE
     echo >> $PDM_RC_FILE
-    echo "export PDM_DIR=\"\${HOME}/.pdm\"" >> $PDM_RC_FILE
+    echo "export PDM_DIR=\"${PDM_DIR}\"" >> $PDM_RC_FILE
     echo "export PDM_WORKSPACE_DIR=\"$PDM_WORKSPACE_DIR\"" >> $PDM_RC_FILE
     echo "[ -s \"\${PDM_DIR}/bin/bash_completion\" ] && \\. \"\${PDM_DIR}/bin/bash_completion\"" >> $PDM_RC_FILE
   fi
@@ -122,6 +121,7 @@ do_setup() {
   fi
 
   sudo ln -fs "$PDM_DIR/bin/pdm.sh" "/usr/bin/pdm"
+  source $PDM_RC_FILE "--ignore-update"
 }
 
 ## Setting
