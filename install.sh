@@ -34,7 +34,13 @@ pdm_update_from_git() {
     exit 2
   }
 
-  echo " => Updated to $INSTALL_VERSION!"
+  pdm_echo "${PDM_IC}    ____  ____  __  ___${PDM_RC}"
+  pdm_echo "${PDM_PC}   / __ \/ __ \/  |/  /${PDM_RC}"
+  pdm_echo "${PDM_GC}  / /_/ / / / / /|_/ / ${PDM_RC}"
+  pdm_echo "${PDM_WC} / ____/ /_/ / /  / /  ${PDM_RC}"
+  pdm_echo "${PDM_EC}/_/   /_____/_/  /_/   ${PDM_RC}"
+  pdm_echo
+  pdm_echo "\e[0;35m Awesome! PDM has been updated!${PDM_RC} (${PDM_PC}${INSTALL_VERSION}${PDM_RC})"
 
   return
 }
