@@ -17,7 +17,7 @@ pdm_source() {
 }
 
 pdm_version() {
-  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/main/version.md)
+  printf %s "stable"
 }
 
 pdm_update_from_git() {
@@ -49,7 +49,7 @@ pdm_install_from_git() {
     pdm_update_from_git
   else
     # Cloning repo
-    command git clone "$(pdm_source)" --depth=1 "${INSTALL_DIR}" || {
+    command git -c advice.detachedHead=false clone "$(pdm_source)" --depth=1 --branch "${INSTALL_VERSION}" --single-branch "${INSTALL_DIR}" || {
       echo -e >&2 ' [\e[1;31mError\e[0m]: Failed to clone repo.'
       exit 2
     }

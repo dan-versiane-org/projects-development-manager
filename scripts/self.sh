@@ -8,7 +8,7 @@ update_from_git() {
     exit 0
   fi
 
-  if ! command git --git-dir="$PDM_DIR"/.git --work-tree="$PDM_DIR" fetch origin "$PROJECT_VERSION" --depth=1 2>/dev/null; then
+  if ! command git --git-dir="$PDM_DIR"/.git --work-tree="$PDM_DIR" fetch origin "stable" --depth=1 2>/dev/null; then
     pdm_error "Failed to update with $PROJECT_VERSION."
     exit 2
   fi
@@ -18,7 +18,7 @@ update_from_git() {
     exit 2
   }
 
-  pdm_success "Updated to $PROJECT_VERSION!"
+  pdm_echo " => Updated to ${PDM_PC}${PROJECT_VERSION}${PDM_RC}."
 }
 
 handle_self_update() {
