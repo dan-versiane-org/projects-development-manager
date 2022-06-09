@@ -17,7 +17,7 @@ pdm_source() {
 }
 
 pdm_version() {
-  printf %s "stable"
+  printf %s $(curl -o- -s https://raw.githubusercontent.com/dan-versiane-org/projects-development-manager/stable/version.md)
 }
 
 pdm_update_from_git() {
