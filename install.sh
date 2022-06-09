@@ -23,6 +23,12 @@ pdm_version() {
 pdm_update_from_git() {
   local INSTALL_DIR="$(pdm_install_dir)"
   local INSTALL_VERSION="$(pdm_version)"
+  local CURRENT_VERSION="$(cat ${INSTALL_DIR}/version.md)"
+
+  if [ "${INSTALL_VERSION}" = "${CURRENT_VERSION}" ]; then
+    echo -e >&2 "\e[0;35m Awesome! PDM is already updated!\e[0m"
+    return 0
+  fi
 
   if ! command git --git-dir="$INSTALL_DIR"/.git --work-tree="$INSTALL_DIR" fetch origin "$INSTALL_VERSION" --depth=1 2>/dev/null; then
     echo -e >&2 " [\e[1;31mError\e[0m]: Failed to update with $INSTALL_VERSION."
@@ -34,13 +40,13 @@ pdm_update_from_git() {
     exit 2
   }
 
-  pdm_echo "${PDM_IC}    ____  ____  __  ___${PDM_RC}"
-  pdm_echo "${PDM_PC}   / __ \/ __ \/  |/  /${PDM_RC}"
-  pdm_echo "${PDM_GC}  / /_/ / / / / /|_/ / ${PDM_RC}"
-  pdm_echo "${PDM_WC} / ____/ /_/ / /  / /  ${PDM_RC}"
-  pdm_echo "${PDM_EC}/_/   /_____/_/  /_/   ${PDM_RC}"
-  pdm_echo
-  pdm_echo "\e[0;35m Awesome! PDM has been updated!${PDM_RC} (${PDM_PC}${INSTALL_VERSION}${PDM_RC})"
+  echo -e >&2 "\e[1;34m    ____  ____  __  ___\e[0m"
+  echo -e >&2 "\e[1;35m   / __ \/ __ \/  |/  /\e[0m"
+  echo -e >&2 "\e[0;32m  / /_/ / / / / /|_/ / \e[0m"
+  echo -e >&2 "\e[1;33m / ____/ /_/ / /  / /  \e[0m"
+  echo -e >&2 "\e[1;31m/_/   /_____/_/  /_/   \e[0m"
+  echo -e >&2 ""
+  echo -e >&2 "\e[0;35m Awesome! PDM has been updated!\e[0m (\e[1;35m${INSTALL_VERSION}\e[0m)"
 
   return
 }
@@ -127,7 +133,6 @@ do_setup() {
   fi
 
   sudo ln -fs "$PDM_DIR/bin/pdm.sh" "/usr/bin/pdm"
-  source $PDM_RC_FILE "--ignore-update"
 }
 
 ## Setting
