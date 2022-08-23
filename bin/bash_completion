@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# TODO: in development
-
-if ! command -v pdm &> /dev/null; then
-  return
-fi
