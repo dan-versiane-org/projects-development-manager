@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+## Loads the PDM utils & configs
+# RC by pdm
+source "${PDM_DIR}/.pdmrc"
+
+# Utils methods
+source "${PDM_DIR}/lib/utils.sh"
+
+find_cmd() {
+  local cmd_dir="${1}/${2}/bin"
+  local cmd_name="command-${3}.sh"
+  local cmd_args="${@:4:$#}"
+  printf "%s %s\\n" "$cmd_dir/$cmd_name" "$cmd_args"
+}
+
+find_pdm_cmd() {
+  local pdm_cmd_dir="${PDM_DIR}/lib"
+
+  case "$1" in
+    'workspace')
+      find_cmd "${pdm_cmd_dir}" "${@}"
+      ;;
+
+    *)
+      find_cmd "${PDM_DIR}/plugins" "${@}"
+      ;;
+  esac
+}
+
+pdm_cmd() {
+  local pdm_cmd_file args
+  IFS=' ' read -r pdm_cmd_file args <<< "$(find_pdm_cmd "${@}")"
+
+  if [ -f "$pdm_cmd_file" ]; then
+    . "${pdm_cmd_file}" "${args}"
+  else
+    pdm::error "Unknown command: ${PDM_PC}\`asdf ${@:1:2}\`${PDM_RC}"
+    return 127
+  fi
+}
+
+pdm_cmd "${@}"
