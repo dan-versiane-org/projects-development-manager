@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Sets the colors variables
+PDM_PC="${PDM_PC:-\e[1;35m}" # Primary Color
+PDM_PC2="${PDM_PC2:-\e[0;35m}" # Primary Color 2
+PDM_EC="${PDM_EC:-\e[1;31m}" # Error Color
+PDM_WC="${PDM_WC:-\e[1;33m}" # Warning Color
+PDM_IC="${PDM_IC:-\e[1;34m}" # Info Color
+PDM_GC="${PDM_GC:-\e[0;32m}" # Green Color
+PDM_TC="${PDM_TC:-\e[4;33m}" # Title Color
+PDM_RC="\e[0m" # Reset Color
