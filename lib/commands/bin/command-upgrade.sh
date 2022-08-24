@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ${1} = '--force' ]; then
+if [ "${1}" = '--force' ]; then
   ( source "${PDM_DIR}/tools/upgrade.sh" )
   return $?
 fi
