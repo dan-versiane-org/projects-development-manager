@@ -33,6 +33,10 @@ pdm::show_command() {
 }
 
 pdm::workspace::check_dependencies() {
+  local PDM_WORKSPACE_JSON="${PDM_DIR}/cache/workspace.json"
+  local PDM_WORKSPACE_ENV="${PDM_DIR}/cache/workspace.env"
+
+  [ ! -d "${PDM_DIR}/cache" ] && mkdir -p "${PDM_DIR}/cache"
   [ ! -f $PDM_WORKSPACE_JSON ] && echo "["$'\n'"]" > $PDM_WORKSPACE_JSON
   [ ! -f $PDM_WORKSPACE_ENV ] && echo "" > $PDM_WORKSPACE_ENV
 
@@ -43,13 +47,27 @@ pdm::workspace::check_dependencies() {
 }
 
 pdm::workspace::current_name() {
-  [ -f "${PDM_DIR}/cache/workspace.env" ] && source "${PDM_DIR}/cache/workspace.env"
+  local PDM_WORKSPACE_JSON="${PDM_DIR}/cache/workspace.json"
+  local PDM_WORKSPACE_ENV="${PDM_DIR}/cache/workspace.env"
+
+  [ ! -d "${PDM_DIR}/cache" ] && mkdir -p "${PDM_DIR}/cache"
+  [ ! -f $PDM_WORKSPACE_JSON ] && echo "["$'\n'"]" > $PDM_WORKSPACE_JSON
+  [ ! -f $PDM_WORKSPACE_ENV ] && echo "" > $PDM_WORKSPACE_ENV
+
+  source "${PDM_DIR}/cache/workspace.env"
   printf "%s\\n" "${PDM_WORKSPACE_CURRENT_NAME}"
   unset PDM_WORKSPACE_CURRENT_NAME PDM_WORKSPACE_CURRENT_ROOT
 }
 
 pdm::workspace::current_path() {
-  [ -f "${PDM_DIR}/cache/workspace.env" ] && source "${PDM_DIR}/cache/workspace.env"
+  local PDM_WORKSPACE_JSON="${PDM_DIR}/cache/workspace.json"
+  local PDM_WORKSPACE_ENV="${PDM_DIR}/cache/workspace.env"
+
+  [ ! -d "${PDM_DIR}/cache" ] && mkdir -p "${PDM_DIR}/cache"
+  [ ! -f $PDM_WORKSPACE_JSON ] && echo "["$'\n'"]" > $PDM_WORKSPACE_JSON
+  [ ! -f $PDM_WORKSPACE_ENV ] && echo "" > $PDM_WORKSPACE_ENV
+
+  source "${PDM_DIR}/cache/workspace.env"
   printf "%s\\n" "${PDM_WORKSPACE_CURRENT_ROOT}"
   unset PDM_WORKSPACE_CURRENT_NAME PDM_WORKSPACE_CURRENT_ROOT
 }

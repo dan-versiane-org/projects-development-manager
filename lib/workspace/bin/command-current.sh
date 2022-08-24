@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+pdm::workspace::check_dependencies
+
 source "${PDM_DIR}/cache/workspace.env"
 
 pdm_workspace_current_name="$(pdm::workspace::current_name)"
