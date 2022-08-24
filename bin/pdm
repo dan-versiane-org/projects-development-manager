@@ -43,7 +43,7 @@ pdm_cmd() {
   if [ -f "$pdm_cmd_file" ]; then
     . "${pdm_cmd_file}" "${args}"
   else
-    pdm::error "Unknown command: ${PDM_PC}\`asdf ${@:1:2}\`${PDM_RC}"
+    pdm::error "Unknown command: ${PDM_PC}\`pdm ${@:1:2}\`${PDM_RC}"
     return 127
   fi
 }
