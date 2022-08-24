@@ -7,7 +7,7 @@ if [ $? -eq 1 ] ;then
   exit 1
 fi
 
-local ret=0
+ret=0
 
 cd "${PDM_DIR}"
 
@@ -21,7 +21,6 @@ resetAutoStash=$(git config --local --bool rebase.autoStash 2>/dev/null)
 git config --local rebase.autoStash true
 
 ## Get Branch and Remote
-local BRANCH REMOTE
 REMOTE=$(git config --local pdm.remote)
 REMOTE=${REMOTE:-origin}
 BRANCH=$(git config --local pdm.branch)
@@ -35,7 +34,7 @@ git checkout -q "${BRANCH}" -- || return 1
 
 ## Update branch
 if LANG= git pull --quiet --rebase ${REMOTE} ${BRANCH}; then
-  local LATEST_VERSION=$(cat "${PDM_DIR}/version.md")
+  LATEST_VERSION=$(cat "${PDM_DIR}/version.md")
 
   ## Show Success
   pdm::echo "${PDM_IC}    ____  ____  __  ___${PDM_RC}"
@@ -60,4 +59,5 @@ esac
 
 cd - >/dev/null 2>&1
 
-return $ret
+printf "%s\\n" "$ret"
+unset ret REMOTE BRANCH LATEST_VERSION resetAutoStash
