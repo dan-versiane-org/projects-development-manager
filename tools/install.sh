@@ -17,11 +17,11 @@ PDM_YC="\e[33m"
 PDM_GC="\e[32m"
 PDM_RE="\e[0m"
 
-pdm::command_exists() {
+pdm_command_exists() {
   command -v "$@" >/dev/null 2>&1
 }
 
-pdm::show_success() {
+pdm_show_success() {
   echo "${PMD_BC}    ____  ____  __  ___${PDM_RE}"
   echo "${PDM_PC}   / __ \/ __ \/  |/  /${PDM_RE}"
   echo "${PDM_GC}  / /_/ / / / / /|_/ / ${PDM_RE}"
@@ -31,9 +31,9 @@ pdm::show_success() {
   echo "${PDM_PC} Awesome! PDM is now installed!${PDM_RE}"
 }
 
-pdm::setup() {
-  if [ ! -d "$PDM" ]; then
-    git init --quiet "$PDM" && cd "$PDM" \
+pdm_setup() {
+  if [ ! -d "${PDM_DIR}" ]; then
+    git init --quiet "${PDM_DIR}" && cd "${PDM_DIR}" \
       && git config --local core.eol lf \
       && git config --local core.autocrlf false \
       && git config --local fsck.zeroPaddedFilemode ignore \
@@ -44,11 +44,11 @@ pdm::setup() {
       && git config --local pdm.remote origin \
       && git config --local pdm.branch "$BRANCH" \
       && git checkout -b "$BRANCH" "origin/${BRANCH}" || {
-        [ ! -d "$PDM" ] || {
+        [ ! -d "${PDM_DIR}" ] || {
           cd - >/dev/null 2>&1
-          rm -rf "$PDM" 2>/dev/null
+          rm -rf "${PDM_DIR}" 2>/dev/null
         }
-        echo " [${PDM_RC}Error${PDM_RC}]: Failed to install PDM."
+        echo " [${PDM_RC}Error${PDM_RE}]: Failed to install PDM."
         exit 1
       }
     cd - >/dev/null 2>&1
@@ -56,15 +56,15 @@ pdm::setup() {
   fi
 }
 
-pdm::install() {
-  if ! pdm::command_exists git; then
+pdm_install() {
+  if ! pdm_command_exists git; then
     echo " [${PMD_BC}Info${PDM_RE}]: You need \`git\` to install this."
     exit 1
   fi
 
-  pdm::setup
+  pdm_setup
 
-  pdm::show_success
+  pdm_show_success
 }
 
-pdm::install
+pdm_install
