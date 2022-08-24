@@ -28,6 +28,12 @@ pdm::info() {
   pdm::echo " [${PDM_IC}Info${PDM_RC}]: ${@}"
 }
 
+pdm::show_help() {
+  echo -e " ${PDM_TC}Usage:${PDM_RC}"
+  echo -e "  ${PDM_PC}pdm ${1} ${PDM_GC}[command]${PDM_RC}"$'\n'
+  echo -e " ${PDM_TC}Available commands:${PDM_RC}"
+}
+
 pdm::show_command() {
   printf %s "  ${PDM_GC}${1}|${PDM_RC}${2}"
 }
