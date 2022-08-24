@@ -7,21 +7,31 @@ source "${PDM_DIR}/.pdmrc"
 # Utils methods
 source "${PDM_DIR}/tools/utils.sh"
 
+## Check auto upgrade
+( source "${PDM_DIR}/tools/check_upgrade.sh" )
+if [ $? -eq 0 ] ;then
+  ( "${PDM_DIR}/lib/commands/bin/command-upgrade.sh" "--force" )
+fi
+
 find_cmd() {
-  local cmd_dir="${1}/${2}/bin"
-  local cmd_name="command-${3}.sh"
-  local cmd_args="${@:4:$#}"
+  local cmd_dir="${1}/bin"
+  local cmd_name="command-${2}.sh"
+  local cmd_args="${@:3:$#}"
   printf "%s %s\\n" "$cmd_dir/$cmd_name" "$cmd_args"
 }
 
 find_pdm_cmd() {
   case "$1" in
+    'upgrade')
+      find_cmd "${PDM_DIR}/lib/commands" "${@:1:$#}"
+      ;;
+
     'workspace')
-      find_cmd "${PDM_DIR}/lib" "${@}"
+      find_cmd "${PDM_DIR}/lib/workspace" "${@:2:$#}"
       ;;
 
     *)
-      find_cmd "${PDM_DIR}/plugins" "${@}"
+      find_cmd "${PDM_DIR}/plugins/${1}" "${@:2:$#}"
       ;;
   esac
 }
