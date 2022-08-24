@@ -27,7 +27,7 @@ BRANCH=$(git config --local pdm.branch)
 BRANCH=${BRANCH:-main}
 
 ## Get current version
-local CURRENT_VERSION=$(cat "${PDM_DIR}/version.md")
+CURRENT_VERSION=$(cat "${PDM_DIR}/version.md")
 
 ## Checkout branch
 git checkout -q "${BRANCH}" -- || return 1
@@ -59,5 +59,6 @@ esac
 
 cd - >/dev/null 2>&1
 
-printf "%s\\n" "$ret"
-unset ret REMOTE BRANCH LATEST_VERSION resetAutoStash
+unset CURRENT_VERSION REMOTE BRANCH LATEST_VERSION resetAutoStash
+
+return ${ret}

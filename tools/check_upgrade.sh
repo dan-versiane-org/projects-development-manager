@@ -83,6 +83,4 @@ if [ "${ASK:-yes}" = "yes" ]; then
   echo
 fi
 
-$(builtin cd "${PDM_DIR}"; git merge-base ${LOCAL_HEAD} ${REMOTE_HEAD} 2>/dev/null)
-
 return 0
