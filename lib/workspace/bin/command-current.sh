@@ -2,13 +2,16 @@
 
 source "${PDM_DIR}/cache/workspace.env"
 
-if [ -z "${PDM_WORKSPACE_CURRENT_NAME}" ]; then
+pdm_workspace_current_name="$(pdm::workspace::current_name)"
+pdm_workspace_current_path="$(pdm::workspace::current_path)"
+
+if [ -z "${pdm_workspace_current_name}" ]; then
   pdm::warn "No workspace is currently set."
   exit 2
 fi
 
 echo
-pdm::echo "Workspace: ${PDM_PC}${PDM_WORKSPACE_CURRENT_NAME}${PDM_RC}"
-pdm::echo "Root path: ${PDM_PC}${PDM_WORKSPACE_CURRENT_ROOT}${PDM_RC}"
+pdm::echo "Workspace: ${PDM_PC}${pdm_workspace_current_name}${PDM_RC}"
+pdm::echo "Root path: ${PDM_PC}${pdm_workspace_current_path}${PDM_RC}"
 
-unset PDM_WORKSPACE_CURRENT_NAME PDM_WORKSPACE_CURRENT_ROOT
+unset pdm_workspace_current_name pdm_workspace_current_root

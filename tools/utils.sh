@@ -42,6 +42,18 @@ pdm::workspace::check_dependencies() {
   fi
 }
 
+pdm::workspace::current_name() {
+  [ -f "${PDM_DIR}/cache/workspace.env" ] && source "${PDM_DIR}/cache/workspace.env"
+  printf "%s\\n" "${PDM_WORKSPACE_CURRENT_NAME}"
+  unset PDM_WORKSPACE_CURRENT_NAME PDM_WORKSPACE_CURRENT_ROOT
+}
+
+pdm::workspace::current_path() {
+  [ -f "${PDM_DIR}/cache/workspace.env" ] && source "${PDM_DIR}/cache/workspace.env"
+  printf "%s\\n" "${PDM_WORKSPACE_CURRENT_ROOT}"
+  unset PDM_WORKSPACE_CURRENT_NAME PDM_WORKSPACE_CURRENT_ROOT
+}
+
 pdm::read_an_answer() {
   local ANSWER
   if [ -z "$2" ]; then

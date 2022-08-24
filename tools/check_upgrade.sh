@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-local ASK
+ASK="yes"
 
 if [ ${1} = "--ignore-mode" ]; then
   PDM_UPDATE_MODE="auto"
@@ -31,7 +31,8 @@ case ${PDM_UPDATE_MODE} in
     return 127;;
 esac
 
-local REMOTE_HEAD LOCAL_HEAD
+REMOTE_HEAD=""
+LOCAL_HEAD=""
 
 ## Check if have a remote upgrade (0: yes, 1: no)
 pdm::has_upgrade() {
