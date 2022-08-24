@@ -2,7 +2,7 @@
 
 ASK="yes"
 
-if [ ${1} = "--ignore-mode" ]; then
+if [ "${1}" = "--ignore-mode" ]; then
   PDM_UPDATE_MODE="auto"
 fi
 
