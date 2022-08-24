@@ -8,9 +8,11 @@ source "${PDM_DIR}/.pdmrc"
 source "${PDM_DIR}/tools/utils.sh"
 
 ## Check auto upgrade
-( source "${PDM_DIR}/tools/check_upgrade.sh" )
-if [ $? -eq 0 ] ;then
-  ( "${PDM_DIR}/lib/commands/bin/command-upgrade.sh" "--force" )
+if [ "${1}" != "upgrade" ]; then
+  ( source "${PDM_DIR}/tools/check_upgrade.sh" )
+  if [ $? -eq 0 ]; then
+    ( "${PDM_DIR}/lib/commands/bin/command-upgrade.sh" "--force" )
+  fi
 fi
 
 find_cmd() {
