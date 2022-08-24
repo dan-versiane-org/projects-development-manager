@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
-PDM_WORKSPACE_SCRIPTS="${PDM_DIR}/lib/workspace/scripts"
-PDM_WORKSPACE_JSON="${PDM_DIR}/cache/workspace.json"
-PDM_WORKSPACE_ENV="${PDM_DIR}/cache/workspace.env"
-
 pdm::workspace::check_dependencies
 
 workspace::get_info() {
   local workspace=$1
-  _NAME="$1" _CONF="$PDM_WORKSPACE_JSON" python3 $PDM_WORKSPACE_SCRIPTS/info.py
+  _NAME="$1" _CONF="${PDM_DIR}/cache/workspace.json" python3 "${PDM_DIR}/lib/workspace/scripts/info.py"
 }
 
 workspace::set() {
@@ -17,11 +13,15 @@ workspace::set() {
 
   IFS="|" read -a result <<< "$result_info"
 
-  echo "PDM_WORKSPACE_CURRENT_NAME=\"${result[0]}\"" > $PDM_WORKSPACE_ENV
-  echo "PDM_WORKSPACE_CURRENT_ROOT=\"${result[1]}\"" >> $PDM_WORKSPACE_ENV
+  if [ -z ${result[0]} ]; then
+    pdm::error "There is no workspace created with name ${PDM_PC}${1}${PDM_RC}."
+    return 1
+  fi
+
+  echo "PDM_WORKSPACE_CURRENT_NAME=\"${result[0]}\"" > "${PDM_DIR}/cache/workspace.env"
+  echo "PDM_WORKSPACE_CURRENT_ROOT=\"${result[1]}\"" >> "${PDM_DIR}/cache/workspace.env"
 
   pdm::success "Setted workspace to ${PDM_PC}${1}${PDM_RC}."
 }
 
 workspace::set $@
-unset PDM_WORKSPACE_SCRIPTS PDM_WORKSPACE_JSON PDM_WORKSPACE_ENV
