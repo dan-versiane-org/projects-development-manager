@@ -5,7 +5,7 @@
 source "${PDM_DIR}/.pdmrc"
 
 # Utils methods
-source "${PDM_DIR}/lib/utils.sh"
+source "${PDM_DIR}/tools/utils.sh"
 
 find_cmd() {
   local cmd_dir="${1}/${2}/bin"
@@ -15,11 +15,9 @@ find_cmd() {
 }
 
 find_pdm_cmd() {
-  local pdm_cmd_dir="${PDM_DIR}/lib"
-
   case "$1" in
     'workspace')
-      find_cmd "${pdm_cmd_dir}" "${@}"
+      find_cmd "${PDM_DIR}/lib" "${@}"
       ;;
 
     *)
