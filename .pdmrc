@@ -9,3 +9,13 @@ PDM_IC="${PDM_IC:-\e[1;34m}" # Info Color
 PDM_GC="${PDM_GC:-\e[0;32m}" # Green Color
 PDM_TC="${PDM_TC:-\e[4;33m}" # Title Color
 PDM_RC="\e[0m" # Reset Color
+
+# Configuration to change the auto-update behavior (default: ask).
+# disabled => Disable automatic updates.
+# ask      => Ask me every time execute pdm.
+# auto     => Update automatically without asking.
+# reminder => Just remind me to update when it's time.
+PDM_UPDATE_MODE=${PDM_UPDATE_MODE:-ask}
+
+# Frequency for auto-update when you have set "reminder" (in days) (default: 3).
+PDM_UPDATE_FREQUENCY=${PDM_UPDATE_FREQUENCY:-3}
